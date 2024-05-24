@@ -1,0 +1,391 @@
+plugins {
+    id('idea')
+    id('java')
+    id('jacoco')
+    id('com.adarshr.test-logger') version('4.0.0')
+    id('org.springframework.boot') version('3.2.5')
+    id('io.spring.dependency-management') version('1.1.4')
+}
+
+sourceSets {
+
+    unit {
+        java {
+            srcDirs(file('src/test/unit/java'))
+        }
+
+        resources {
+            srcDirs(file("src/test/unit/resources"))
+        }
+
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+    }
+
+    integration {
+
+        java {
+            srcDirs(file('src/test/integration/java'))
+        }
+
+        resources {
+            srcDirs(file('src/test/integration/resources'))
+        }
+
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+    }
+
+    acceptanceCucumber {
+
+        java {
+            srcDirs(file('src/test/acceptance/cucumber/java'))
+        }
+
+        resources {
+            srcDirs(file('src/test/acceptance/cucumber/resources'))
+        }
+
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+    }
+
+    acceptanceJunit {
+
+        java {
+            srcDirs(file('src/test/acceptance/junit/java'))
+        }
+
+        resources {
+            srcDirs(file('src/test/acceptance/junit/resources'))
+        }
+
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+    }
+
+    test {
+        java {
+            srcDirs()
+        }
+    }
+
+}
+
+configurations {
+
+    unitImplementation {
+        extendsFrom(testImplementation)
+    }
+
+    unitRuntimeOnly {
+        extendsFrom(testRuntimeOnly)
+    }
+
+    unitCompileOnly {
+        extendsFrom(testCompileOnly)
+    }
+
+    integrationImplementation {
+        extendsFrom(testImplementation)
+    }
+
+    integrationRuntimeOnly {
+        extendsFrom(testRuntimeOnly)
+    }
+
+    integrationCompileOnly {
+        extendsFrom(testCompileOnly)
+    }
+
+    acceptanceCucumberImplementation {
+        extendsFrom(testImplementation)
+    }
+
+    acceptanceCucumberRuntimeOnly {
+        extendsFrom(testRuntimeOnly)
+    }
+
+    acceptanceCucumberCompileOnly {
+        extendsFrom(testCompileOnly)
+    }
+
+    acceptanceJunitImplementation {
+        extendsFrom(testImplementation)
+    }
+
+    acceptanceJunitRuntimeOnly {
+        extendsFrom(testRuntimeOnly)
+    }
+
+    acceptanceJunitCompileOnly {
+        extendsFrom(testCompileOnly)
+    }
+
+}
+
+idea {
+    module {
+        testSources.from(
+            sourceSets.unit.java.srcDirs,
+            sourceSets.integration.java.srcDirs,
+            sourceSets.acceptanceCucumber.java.srcDirs,
+            sourceSets.acceptanceJunit.java.srcDirs,
+        )
+    }
+}
+
+tasks.register('unit', Test)
+tasks.register('integration', Test)
+tasks.register('acceptanceCucumber', Test)
+tasks.register('acceptanceJunit', Test)
+tasks.register('junitTestReport', TestReport)
+tasks.register('jacocoUnitTestReport', JacocoReport)
+tasks.register('jacocoIntegrationTestReport', JacocoReport)
+tasks.register('jacocoAcceptanceCucumberTestReport', JacocoReport)
+tasks.register('jacocoAcceptanceJunitTestReport', JacocoReport)
+
+unit {
+
+    useJUnitPlatform()
+
+    setTestClassesDirs(sourceSets.unit.output.classesDirs)
+    setClasspath(sourceSets.unit.runtimeClasspath)
+
+    reports {
+        html.outputLocation.set(
+            file('build/reports/junit/unit')
+        )
+    }
+
+    finalizedBy(
+        jacocoUnitTestReport,
+        jacocoTestReport,
+        junitTestReport
+    )
+
+}
+
+integration {
+
+    useJUnitPlatform()
+
+    setTestClassesDirs(sourceSets.integration.output.classesDirs)
+    setClasspath(sourceSets.integration.runtimeClasspath)
+
+    reports {
+        html.outputLocation.set(
+            file('build/reports/junit/integration')
+        )
+    }
+
+    finalizedBy(
+        jacocoIntegrationTestReport,
+        jacocoTestReport,
+        junitTestReport
+    )
+
+    shouldRunAfter(unit)
+
+}
+
+acceptanceCucumber {
+
+    useJUnitPlatform()
+
+    setTestClassesDirs(sourceSets.acceptanceCucumber.output.classesDirs)
+    setClasspath(sourceSets.acceptanceCucumber.runtimeClasspath)
+
+    systemProperty('cucumber.plugin', 'pretty, html:build/reports/cucumber/report.html')
+
+    reports {
+        html.outputLocation.set(
+            file('build/reports/junit/acceptance/cucumber')
+        )
+    }
+
+    testLogging {
+        events("STANDARD_OUT")
+    }
+
+    testlogger {
+        showExceptions(false)
+        showPassed(false)
+        showSkipped(false)
+        showFailed(false)
+        showSummary(false)
+    }
+
+    finalizedBy(
+        jacocoAcceptanceCucumberTestReport,
+        jacocoTestReport,
+        junitTestReport
+    )
+
+    shouldRunAfter(integration)
+
+}
+
+acceptanceJunit {
+
+    useJUnitPlatform()
+
+    setTestClassesDirs(sourceSets.acceptanceJunit.output.classesDirs)
+    setClasspath(sourceSets.acceptanceJunit.runtimeClasspath)
+
+    reports {
+        html.outputLocation.set(
+            file('build/reports/junit/acceptance/junit')
+        )
+    }
+
+    finalizedBy(
+        jacocoAcceptanceJunitTestReport,
+        jacocoTestReport,
+        junitTestReport
+    )
+
+    shouldRunAfter(integration)
+
+}
+
+test {
+    dependsOn(unit, integration, acceptanceCucumber, acceptanceJunit)
+}
+
+jacocoUnitTestReport {
+
+    executionData(unit)
+    sourceSets(sourceSets.main)
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(
+            file('build/reports/jacoco/unit')
+        )
+    }
+
+    shouldRunAfter(unit)
+
+}
+
+jacocoIntegrationTestReport {
+
+    executionData(integration)
+    sourceSets(sourceSets.main)
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(
+            file('build/reports/jacoco/integration')
+        )
+    }
+
+    shouldRunAfter(integration)
+
+}
+
+jacocoAcceptanceCucumberTestReport {
+
+    executionData(acceptanceCucumber)
+    sourceSets(sourceSets.main)
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(
+            file('build/reports/jacoco/acceptance/cucumber')
+        )
+    }
+
+    shouldRunAfter(acceptanceCucumber)
+
+}
+
+jacocoAcceptanceJunitTestReport {
+
+    executionData(acceptanceJunit)
+    sourceSets(sourceSets.main)
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(
+            file('build/reports/jacoco/acceptance/junit')
+        )
+    }
+
+    shouldRunAfter(acceptanceJunit)
+
+}
+
+jacocoTestReport {
+
+    executionData(unit, integration, acceptanceCucumber, acceptanceJunit)
+    sourceSets(sourceSets.main)
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(
+            file('build/reports/jacoco/test')
+        )
+    }
+
+    shouldRunAfter(
+        jacocoUnitTestReport,
+        jacocoIntegrationTestReport,
+        jacocoAcceptanceCucumberTestReport,
+        jacocoAcceptanceJunitTestReport
+    )
+
+}
+
+junitTestReport {
+
+    destinationDirectory.set(
+        file('build/reports/junit/test'),
+    )
+
+    testResults.from(
+        file('build/test-results/unit/binary'),
+        file('build/test-results/integration/binary'),
+        file('build/test-results/acceptanceCucumber/binary'),
+        file('build/test-results/acceptanceJunit/binary')
+    )
+
+    shouldRunAfter(unit, integration, acceptanceCucumber, acceptanceJunit)
+
+}
+
+testlogger {
+    theme('mocha')
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom('io.cucumber:cucumber-bom:7.17.0')
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    acceptanceCucumberImplementation('io.cucumber:cucumber-java')
+    acceptanceCucumberImplementation('io.cucumber:cucumber-spring')
+    acceptanceCucumberImplementation('io.cucumber:cucumber-junit-platform-engine')
+    acceptanceCucumberImplementation("org.junit.platform:junit-platform-suite")
+}
+
+version = '0.0.1'
