@@ -9,6 +9,20 @@ plugins {
 
 sourceSets {
 
+    utils {
+        java {
+            srcDirs(file('src/test/utils/java'))
+        }
+
+        resources {
+            srcDirs(file("src/test/utils/resources"))
+        }
+
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+
+    }
+
     unit {
         java {
             srcDirs(file('src/test/unit/java'))
@@ -18,8 +32,8 @@ sourceSets {
             srcDirs(file("src/test/unit/resources"))
         }
 
-        compileClasspath += main.output
-        runtimeClasspath += main.output
+        compileClasspath += main.output + utils.output
+        runtimeClasspath += main.output + utils.output
 
     }
 
@@ -33,8 +47,8 @@ sourceSets {
             srcDirs(file('src/test/integration/resources'))
         }
 
-        compileClasspath += main.output
-        runtimeClasspath += main.output
+        compileClasspath += main.output + utils.output
+        runtimeClasspath += main.output + utils.output
 
     }
 
@@ -48,8 +62,8 @@ sourceSets {
             srcDirs(file('src/test/acceptance/cucumber/resources'))
         }
 
-        compileClasspath += main.output
-        runtimeClasspath += main.output
+        compileClasspath += main.output + utils.output
+        runtimeClasspath += main.output + utils.output
 
     }
 
@@ -63,8 +77,8 @@ sourceSets {
             srcDirs(file('src/test/acceptance/junit/resources'))
         }
 
-        compileClasspath += main.output
-        runtimeClasspath += main.output
+        compileClasspath += main.output + utils.output
+        runtimeClasspath += main.output + utils.output
 
     }
 
@@ -77,6 +91,18 @@ sourceSets {
 }
 
 configurations {
+
+    utilsImplementation {
+        extendsFrom(testImplementation)
+    }
+
+    utilsRuntimeOnly {
+        extendsFrom(testRuntimeOnly)
+    }
+
+    utilsCompileOnly {
+        extendsFrom(testCompileOnly)
+    }
 
     unitImplementation {
         extendsFrom(testImplementation)
@@ -131,10 +157,11 @@ configurations {
 idea {
     module {
         testSources.from(
+            sourceSets.utils.java.srcDirs,
             sourceSets.unit.java.srcDirs,
             sourceSets.integration.java.srcDirs,
             sourceSets.acceptanceCucumber.java.srcDirs,
-            sourceSets.acceptanceJunit.java.srcDirs,
+            sourceSets.acceptanceJunit.java.srcDirs
         )
     }
 }
