@@ -32,8 +32,7 @@ class SaveHotelTest {
 
     @Test
     void updates_the_hotel_when_the_hotel_already_exists() {
-        var existing = hotel()
-            .build();
+        var existing = anyHotel();
 
         var updated = hotel()
             .id(existing.id())
@@ -47,6 +46,26 @@ class SaveHotelTest {
             .orElseThrow();
 
         assertThat(result).isEqualTo(updated);
+    }
+
+    @Test
+    void does_not_update_existing_hotels_with_other_ids() {
+        var existing = anyHotel();
+        var target = anyHotel();
+
+        var updated = hotel()
+            .id(target.id())
+            .build();
+
+        repository.save(existing);
+        repository.save(target);
+        repository.save(updated);
+
+        var result = repository
+            .find(existing.id())
+            .orElseThrow();
+
+        assertThat(result).isEqualTo(existing);
     }
 
 }
