@@ -15,6 +15,10 @@ public class HotelGenerator {
         uniqueId++;
     }
 
+    public static Hotel anyHotel() {
+        return hotel().build();
+    }
+
     public static HotelGenerator hotel() {
         return new HotelGenerator();
     }
