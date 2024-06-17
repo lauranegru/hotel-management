@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
+import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SaveHotelTest {
@@ -27,6 +28,25 @@ class SaveHotelTest {
             .orElseThrow();
 
         assertThat(result).isEqualTo(hotel);
+    }
+
+    @Test
+    void updates_the_hotel_when_the_hotel_already_exists() {
+        var existing = hotel()
+            .build();
+
+        var updated = hotel()
+            .id(existing.id())
+            .build();
+
+        repository.save(existing);
+        repository.save(updated);
+
+        var result = repository
+            .find(existing.id())
+            .orElseThrow();
+
+        assertThat(result).isEqualTo(updated);
     }
 
 }
