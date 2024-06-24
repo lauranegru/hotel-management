@@ -1,3 +1,8 @@
 spring:
   application:
     name: hotel-management
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hotel_management
+      uuid-representation: standard

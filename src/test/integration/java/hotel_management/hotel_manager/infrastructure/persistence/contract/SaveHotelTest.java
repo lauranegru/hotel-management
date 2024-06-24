@@ -1,6 +1,7 @@
 package hotel_management.hotel_manager.infrastructure.persistence.contract;
 
 import hotel_management.hotel_manager.domain.HotelRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,11 @@ public abstract class SaveHotelTest {
     @BeforeEach
     void setUp() {
         repository = repository();
+    }
+
+    @AfterEach
+    void tearDown() {
+        repository.delete();
     }
 
     @Test

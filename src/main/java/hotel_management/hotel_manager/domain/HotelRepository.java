@@ -9,4 +9,6 @@ public interface HotelRepository {
 
     void save(Hotel hotel);
 
+    void delete();
+
 }
