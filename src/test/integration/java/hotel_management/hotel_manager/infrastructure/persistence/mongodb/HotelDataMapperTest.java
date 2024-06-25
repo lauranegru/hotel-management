@@ -33,4 +33,21 @@ class HotelDataMapperTest {
         assertThat(result).isEqualTo(expected);
     }
 
+    @Test
+    void converts_hotel_data_to_hotel() {
+        var hotelData = hotelData()
+            .id("63564297-1cb7-4542-8f4e-a40c0a4c79d6")
+            .name("Hotel 1")
+            .build();
+
+        var result = mapper.convert(hotelData);
+
+        var expected = hotel()
+            .id("63564297-1cb7-4542-8f4e-a40c0a4c79d6")
+            .name("Hotel 1")
+            .build();
+
+        assertThat(result).isEqualTo(expected);
+    }
+
 }
