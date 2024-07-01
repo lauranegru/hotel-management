@@ -30,4 +30,16 @@ public class FindHotelTest {
         assertThat(result).isEqualTo(hotel);
     }
 
+    @Test
+    void returns_no_hotel_when_the_hotel_does_not_exist() {
+        var hotel = anyHotel();
+
+        repository.save(anyHotel());
+
+        var result = repository
+            .find(hotel.id());
+
+        assertThat(result).isEmpty();
+    }
+
 }

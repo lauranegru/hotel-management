@@ -22,7 +22,7 @@ public class MemoryHotelRepository implements HotelRepository {
 
     @Override
     public Optional<Hotel> find(UUID id) {
-        return Optional.of(hotels.get(id));
+        return Optional.ofNullable(hotels.get(id));
     }
 
     @Override
