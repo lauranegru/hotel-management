@@ -42,4 +42,14 @@ public class FindHotelTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    void returns_no_hotel_when_no_hotels_exist() {
+        var hotel = anyHotel();
+
+        var result = repository
+            .find(hotel.id());
+
+        assertThat(result).isEmpty();
+    }
+
 }
