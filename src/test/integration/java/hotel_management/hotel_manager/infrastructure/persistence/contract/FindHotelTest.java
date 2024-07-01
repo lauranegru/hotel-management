@@ -1,20 +1,21 @@
 package hotel_management.hotel_manager.infrastructure.persistence.contract;
 
 import hotel_management.hotel_manager.domain.HotelRepository;
-import hotel_management.hotel_manager.infrastructure.persistence.memory.MemoryHotelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindHotelTest {
+public abstract class FindHotelTest {
 
     private HotelRepository repository;
 
+    protected abstract HotelRepository repository();
+
     @BeforeEach
     public void setUp() {
-        repository = new MemoryHotelRepository();
+        repository = repository();
     }
 
     @Test
