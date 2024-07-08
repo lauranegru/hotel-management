@@ -1,6 +1,5 @@
 package hotel_management.hotel_manager.infrastructure.persistence.contract;
 
-import hotel_management.hotel_manager.domain.HotelGenerator;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +35,23 @@ public abstract class DeleteHotelTest {
         var result = repository.find(hotel.id());
 
         assertThat(result).isEmpty();
+    }
+
+    @Test
+    void deletes_all_hotels_when_multiple_hotels_exist() {
+        var hotelOne = anyHotel();
+        var hotelTwo = anyHotel();
+
+        repository.save(hotelOne);
+        repository.save(hotelTwo);
+
+        repository.delete();
+
+        var resultOne = repository.find(hotelOne.id());
+        var resultTwo = repository.find(hotelTwo.id());
+
+        assertThat(resultOne).isEmpty();
+        assertThat(resultTwo).isEmpty();
     }
 
 }
