@@ -19,7 +19,6 @@ public class CreateHotelTest {
     private HotelService service;
 
     @Test
-    @Disabled
     void creates_the_hotel_when_the_command_is_valid() {
         var createHotel = createHotelCommand()
             .id("685cd9b3-4788-49d1-a754-cd1130b795a4")
