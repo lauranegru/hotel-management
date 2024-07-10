@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 public class HotelMapper {
 
     public HotelView toView(Hotel hotel) {
-        return null;
+        return new HotelView(
+            hotel.id(),
+            hotel.name()
+        );
     }
 
 }
