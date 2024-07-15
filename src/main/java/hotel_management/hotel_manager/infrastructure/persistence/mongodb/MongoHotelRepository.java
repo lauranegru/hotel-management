@@ -11,12 +11,12 @@ import java.util.UUID;
 @Component
 public class MongoHotelRepository implements HotelRepository {
 
-    private final MongoHotelDataRepository repository;
-    private final HotelDataMapper mapper;
+    private final MongoHotelSpringRepository repository;
+    private final MongoHotelMapper mapper;
 
     public MongoHotelRepository(
-        MongoHotelDataRepository repository,
-        HotelDataMapper mapper
+        MongoHotelSpringRepository repository,
+        MongoHotelMapper mapper
     ) {
         this.repository = repository;
         this.mapper = mapper;
@@ -25,14 +25,14 @@ public class MongoHotelRepository implements HotelRepository {
     @Override
     public Optional<Hotel> find(UUID id) {
         return repository.findById(id)
-            .map(mapper::convert)
+            .map(mapper::toHotel)
             .blockOptional();
     }
 
     @Override
     public void save(Hotel hotel) {
         Mono.just(hotel)
-            .map(mapper::convert)
+            .map(mapper::toMongo)
             .flatMap(repository::save)
             .block();
     }

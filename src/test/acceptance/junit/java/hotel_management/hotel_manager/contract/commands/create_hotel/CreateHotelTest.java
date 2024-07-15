@@ -1,14 +1,13 @@
 package hotel_management.hotel_manager.contract.commands.create_hotel;
 
 import hotel_management.hotel_manager.service.HotelService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static hotel_management.hotel_manager.contract.commands.create_hotel.CreateHotelCommandBuilder.createHotelCommand;
-import static hotel_management.hotel_manager.contract.queries.get_hotel.GetHotelQueryBuilder.getHotelQuery;
-import static hotel_management.hotel_manager.contract.views.HotelViewBuilder.hotelView;
+import static hotel_management.hotel_manager.contract.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
+import static hotel_management.hotel_manager.contract.queries.get_hotel.GetHotelQueryGenerator.getHotelQuery;
+import static hotel_management.hotel_manager.contract.views.HotelViewGenerator.hotelView;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 

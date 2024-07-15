@@ -1,7 +1,7 @@
 package hotel_management.hotel_manager.service;
 
-import hotel_management.hotel_manager.service.commands.CreateHotelCommand;
-import hotel_management.hotel_manager.service.queries.GetHotelQuery;
+import hotel_management.hotel_manager.service.commands.create_hotel.CreateHotelCommand;
+import hotel_management.hotel_manager.service.queries.get_hotel.GetHotelQuery;
 import hotel_management.hotel_manager.service.views.HotelView;
 import org.springframework.web.reactive.function.client.WebClient;
 
