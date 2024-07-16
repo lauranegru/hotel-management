@@ -36,8 +36,12 @@ public class CreateHotelCommandGenerator {
         return this;
     }
 
+    public CreateHotelCommandGenerator blankName() {
+        this.name = "";
+        return this;
+    }
+
     public CreateHotelCommand build() {
         return new CreateHotelCommand(id, name);
     }
-
 }

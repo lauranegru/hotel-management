@@ -3,6 +3,7 @@ package hotel_management.hotel_manager.service;
 import hotel_management.hotel_manager.service.commands.create_hotel.CreateHotelCommand;
 import hotel_management.hotel_manager.service.queries.get_hotel.GetHotelQuery;
 import hotel_management.hotel_manager.service.views.HotelView;
+import hotel_management.shared.WebClientExceptionTranslator;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -10,8 +11,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class HotelService {
 
     private final WebClient client;
+    private final WebClientExceptionTranslator translator;
 
-    public HotelService(WebClient client) {
+    public HotelService(WebClient client, WebClientExceptionTranslator translator) {
+        this.translator = translator;
         this.client = client;
     }
 
@@ -23,6 +26,7 @@ public class HotelService {
             .bodyValue(command)
             .retrieve()
             .bodyToMono(Void.class)
+            .transform(translator::translate)
             .block();
     }
 
