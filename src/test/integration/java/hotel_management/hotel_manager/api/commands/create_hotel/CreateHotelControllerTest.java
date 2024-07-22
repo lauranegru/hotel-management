@@ -1,6 +1,8 @@
 package hotel_management.hotel_manager.api.commands.create_hotel;
 
+import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommand;
 import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelHandler;
+import hotel_management.hotel_manager.domain.InvalidHotelName;
 import hotel_management.shared.api.rest.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,11 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.createHotelRequest;
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
+import static hotel_management.shared.api.rest.RestErrorBuilder.errorResponse;
 import static hotel_management.shared.api.rest.RestResponseBuilder.response;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
@@ -64,6 +69,29 @@ class CreateHotelControllerTest {
             .build();
 
         verify(handler).execute(command);
+    }
+
+    @Test
+    void returns_an_error_response_when_the_name_is_missing() {
+        givenException(new InvalidHotelName("The hotel name should not be missing"));
+
+        var request = createHotelRequest()
+            .missingName()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The hotel name should not be missing")
+            .type("invalid-hotel-name")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
+    private void givenException(Throwable exception) {
+        willThrow(exception).given(handler).execute(any(CreateHotelCommand.class));
     }
 
 }

@@ -27,6 +27,11 @@ public class JsonBuilder {
         return this;
     }
 
+    public JsonBuilder remove(String key) {
+        node.remove(key);
+        return this;
+    }
+
     public String build() {
         return node.toString();
     }
