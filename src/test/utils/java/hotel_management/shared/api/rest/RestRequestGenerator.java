@@ -2,27 +2,27 @@ package hotel_management.shared.api.rest;
 
 import java.util.Optional;
 
-public class RestRequestBuilder {
+public class RestRequestGenerator {
 
     private String method;
     private String path;
     private String body;
 
-    public static RestRequestBuilder request() {
-        return new RestRequestBuilder();
+    public static RestRequestGenerator request() {
+        return new RestRequestGenerator();
     }
 
-    public RestRequestBuilder method(String method) {
+    public RestRequestGenerator method(String method) {
         this.method = method;
         return this;
     }
 
-    public RestRequestBuilder path(String path) {
+    public RestRequestGenerator path(String path) {
         this.path = path;
         return this;
     }
 
-    public RestRequestBuilder body(String body) {
+    public RestRequestGenerator body(String body) {
         this.body = body;
         return this;
     }

@@ -1,19 +1,19 @@
 package hotel_management.hotel_manager.api.queries.get_hotel;
 
-import hotel_management.shared.api.rest.JsonBuilder;
+import hotel_management.shared.api.rest.JsonGenerator;
 import hotel_management.shared.api.rest.RestResponse;
 
 import java.util.UUID;
 
-import static hotel_management.shared.api.rest.JsonBuilder.json;
-import static hotel_management.shared.api.rest.RestResponseBuilder.response;
+import static hotel_management.shared.api.rest.JsonGenerator.json;
+import static hotel_management.shared.api.rest.RestResponseGenerator.response;
 
 public class GetHotelResponseGenerator {
 
     private static Integer uniqueId = 1;
 
     private Integer status;
-    private final JsonBuilder json;
+    private final JsonGenerator json;
 
     private GetHotelResponseGenerator() {
         json = json();

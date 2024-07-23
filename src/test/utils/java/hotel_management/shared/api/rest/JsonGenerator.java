@@ -3,31 +3,31 @@ package hotel_management.shared.api.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class JsonBuilder {
+public class JsonGenerator {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private final ObjectNode node;
 
-    private JsonBuilder() {
+    private JsonGenerator() {
         node = mapper.createObjectNode();
     }
 
-    public static JsonBuilder json() {
-        return new JsonBuilder();
+    public static JsonGenerator json() {
+        return new JsonGenerator();
     }
 
-    public JsonBuilder set(String key, Object value) {
+    public JsonGenerator set(String key, Object value) {
         node.set(key, mapper.valueToTree(value));
         return this;
     }
 
-    public JsonBuilder set(String key, JsonBuilder json) {
+    public JsonGenerator set(String key, JsonGenerator json) {
         node.set(key, json.node);
         return this;
     }
 
-    public JsonBuilder remove(String key) {
+    public JsonGenerator remove(String key) {
         node.remove(key);
         return this;
     }

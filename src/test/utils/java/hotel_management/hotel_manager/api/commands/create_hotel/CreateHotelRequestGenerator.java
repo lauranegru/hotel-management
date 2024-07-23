@@ -1,18 +1,18 @@
 package hotel_management.hotel_manager.api.commands.create_hotel;
 
-import hotel_management.shared.api.rest.JsonBuilder;
+import hotel_management.shared.api.rest.JsonGenerator;
 import hotel_management.shared.api.rest.RestRequest;
 
 import java.util.UUID;
 
-import static hotel_management.shared.api.rest.JsonBuilder.json;
-import static hotel_management.shared.api.rest.RestRequestBuilder.request;
+import static hotel_management.shared.api.rest.JsonGenerator.json;
+import static hotel_management.shared.api.rest.RestRequestGenerator.request;
 
 public class CreateHotelRequestGenerator {
 
     private static Integer uniqueId = 1;
 
-    private final JsonBuilder json;
+    private final JsonGenerator json;
 
     private CreateHotelRequestGenerator() {
         json = json();
@@ -52,4 +52,5 @@ public class CreateHotelRequestGenerator {
             .body(json.build())
             .build();
     }
+
 }

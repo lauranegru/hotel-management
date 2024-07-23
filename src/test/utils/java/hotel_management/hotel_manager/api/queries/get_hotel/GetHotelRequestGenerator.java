@@ -4,7 +4,7 @@ import hotel_management.shared.api.rest.RestRequest;
 
 import java.util.UUID;
 
-import static hotel_management.shared.api.rest.RestRequestBuilder.request;
+import static hotel_management.shared.api.rest.RestRequestGenerator.request;
 
 public class GetHotelRequestGenerator {
 

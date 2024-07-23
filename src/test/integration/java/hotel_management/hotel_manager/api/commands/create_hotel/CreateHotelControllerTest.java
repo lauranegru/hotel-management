@@ -14,8 +14,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.createHotelRequest;
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
-import static hotel_management.shared.api.rest.RestErrorBuilder.errorResponse;
-import static hotel_management.shared.api.rest.RestResponseBuilder.response;
+import static hotel_management.shared.api.rest.RestErrorGenerator.errorResponse;
+import static hotel_management.shared.api.rest.RestResponseGenerator.response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willThrow;

@@ -1,32 +1,32 @@
 package hotel_management.shared.api.rest;
 
-import static hotel_management.shared.api.rest.JsonBuilder.json;
-import static hotel_management.shared.api.rest.RestResponseBuilder.response;
+import static hotel_management.shared.api.rest.JsonGenerator.json;
+import static hotel_management.shared.api.rest.RestResponseGenerator.response;
 
-public class RestErrorBuilder {
+public class RestErrorGenerator {
 
     private String message;
     private String type;
     private Integer status;
 
-    private RestErrorBuilder() {
+    private RestErrorGenerator() {
     }
 
-    public static RestErrorBuilder errorResponse() {
-        return new RestErrorBuilder();
+    public static RestErrorGenerator errorResponse() {
+        return new RestErrorGenerator();
     }
 
-    public RestErrorBuilder message(String message) {
+    public RestErrorGenerator message(String message) {
         this.message = message;
         return this;
     }
 
-    public RestErrorBuilder type(String type) {
+    public RestErrorGenerator type(String type) {
         this.type = type;
         return this;
     }
 
-    public RestErrorBuilder status(Integer status) {
+    public RestErrorGenerator status(Integer status) {
         this.status = status;
         return this;
     }

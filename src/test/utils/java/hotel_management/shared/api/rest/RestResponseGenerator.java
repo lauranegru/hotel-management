@@ -2,21 +2,21 @@ package hotel_management.shared.api.rest;
 
 import java.util.Optional;
 
-public class RestResponseBuilder {
+public class RestResponseGenerator {
 
     private Integer status;
     private String body;
 
-    public static RestResponseBuilder response() {
-        return new RestResponseBuilder();
+    public static RestResponseGenerator response() {
+        return new RestResponseGenerator();
     }
 
-    public RestResponseBuilder status(Integer status) {
+    public RestResponseGenerator status(Integer status) {
         this.status = status;
         return this;
     }
 
-    public RestResponseBuilder body(String body) {
+    public RestResponseGenerator body(String body) {
         this.body = body;
         return this;
     }
