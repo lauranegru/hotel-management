@@ -45,6 +45,11 @@ public class CreateHotelRequestGenerator {
         return this;
     }
 
+    public CreateHotelRequestGenerator invalidNameValue() {
+        json.set("name", "");
+        return this;
+    }
+
     public RestRequest build() {
         return request()
             .method("POST")
@@ -52,5 +57,4 @@ public class CreateHotelRequestGenerator {
             .body(json.build())
             .build();
     }
-
 }

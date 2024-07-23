@@ -90,6 +90,25 @@ class CreateHotelControllerTest {
         assertThat(response).isEqualTo(expected);
     }
 
+    @Test
+    void returns_an_error_response_when_the_name_has_invalid_value() {
+        givenException(new InvalidHotelName("The hotel name should not be blank"));
+
+        var request = createHotelRequest()
+            .invalidNameValue()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The hotel name should not be blank")
+            .type("invalid-hotel-name")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
     private void givenException(Throwable exception) {
         willThrow(exception).given(handler).execute(any(CreateHotelCommand.class));
     }
