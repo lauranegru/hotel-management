@@ -109,6 +109,23 @@ class CreateHotelControllerTest {
         assertThat(response).isEqualTo(expected);
     }
 
+    @Test
+    void returns_an_error_response_when_the_name_has_invalid_type() {
+        var request = createHotelRequest()
+            .invalidNameType()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The field name should have String type")
+            .type("validation-error")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
     private void givenException(Throwable exception) {
         willThrow(exception).given(handler).execute(any(CreateHotelCommand.class));
     }

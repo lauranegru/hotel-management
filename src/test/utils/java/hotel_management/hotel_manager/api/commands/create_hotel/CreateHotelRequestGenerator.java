@@ -3,6 +3,7 @@ package hotel_management.hotel_manager.api.commands.create_hotel;
 import hotel_management.shared.api.rest.JsonGenerator;
 import hotel_management.shared.api.rest.RestRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 import static hotel_management.shared.api.rest.JsonGenerator.json;
@@ -50,6 +51,11 @@ public class CreateHotelRequestGenerator {
         return this;
     }
 
+    public CreateHotelRequestGenerator invalidNameType() {
+        json.set("name", List.of("invalid-type"));
+        return this;
+    }
+
     public RestRequest build() {
         return request()
             .method("POST")
@@ -57,4 +63,5 @@ public class CreateHotelRequestGenerator {
             .body(json.build())
             .build();
     }
+
 }
