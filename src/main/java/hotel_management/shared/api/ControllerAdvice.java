@@ -1,6 +1,7 @@
 package hotel_management.shared.api;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.hotel_manager.domain.InvalidHotelName;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,6 +19,15 @@ public class ControllerAdvice {
     public ErrorResponse handle(InvalidHotelName exception) {
         return errorResponse()
             .type("invalid-hotel-name")
+            .message(exception.getMessage())
+            .build();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(InvalidHotelId.class)
+    public ErrorResponse handle(InvalidHotelId exception) {
+        return errorResponse()
+            .type("invalid-hotel-id")
             .message(exception.getMessage())
             .build();
     }

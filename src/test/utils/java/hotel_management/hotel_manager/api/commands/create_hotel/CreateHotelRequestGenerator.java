@@ -36,6 +36,11 @@ public class CreateHotelRequestGenerator {
         return this;
     }
 
+    public CreateHotelRequestGenerator missingId() {
+        json.remove("id");
+        return this;
+    }
+
     public CreateHotelRequestGenerator name(String name) {
         json.set("name", name);
         return this;
@@ -63,5 +68,4 @@ public class CreateHotelRequestGenerator {
             .body(json.build())
             .build();
     }
-
 }

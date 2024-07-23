@@ -2,6 +2,7 @@ package hotel_management.hotel_manager.api.commands.create_hotel;
 
 import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommand;
 import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelHandler;
+import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.hotel_manager.domain.InvalidHotelName;
 import hotel_management.shared.api.rest.RestClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,6 +70,25 @@ class CreateHotelControllerTest {
             .build();
 
         verify(handler).execute(command);
+    }
+
+    @Test
+    void returns_an_error_response_when_the_id_is_missing() {
+        givenException(new InvalidHotelId("The hotel id should not be missing"));
+
+        var request = createHotelRequest()
+            .missingId()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The hotel id should not be missing")
+            .type("invalid-hotel-id")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
     }
 
     @Test
