@@ -41,6 +41,11 @@ public class CreateHotelRequestGenerator {
         return this;
     }
 
+    public CreateHotelRequestGenerator invalidIdType() {
+        json.set("id", "invalid-type");
+        return this;
+    }
+
     public CreateHotelRequestGenerator name(String name) {
         json.set("name", name);
         return this;

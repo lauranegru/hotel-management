@@ -92,6 +92,23 @@ class CreateHotelControllerTest {
     }
 
     @Test
+    void returns_an_error_response_when_the_id_has_invalid_type() {
+        var request = createHotelRequest()
+            .invalidIdType()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The field id should have UUID type")
+            .type("validation-error")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
+    @Test
     void returns_an_error_response_when_the_name_is_missing() {
         givenException(new InvalidHotelName("The hotel name should not be missing"));
 
