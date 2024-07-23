@@ -26,6 +26,10 @@ public class CreateHotelRequestGenerator {
         return new CreateHotelRequestGenerator();
     }
 
+    public static RestRequest anyCreateHotelRequest() {
+        return createHotelRequest().build();
+    }
+
     public CreateHotelRequestGenerator id(String id) {
         json.set("id", id);
         return this;
@@ -73,4 +77,5 @@ public class CreateHotelRequestGenerator {
             .body(json.build())
             .build();
     }
+
 }

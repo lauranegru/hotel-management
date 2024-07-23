@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.anyCreateHotelRequest;
 import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.createHotelRequest;
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
 import static hotel_management.shared.api.rest.RestErrorGenerator.errorResponse;
@@ -158,6 +159,23 @@ class CreateHotelControllerTest {
             .message("The field name should have String type")
             .type("validation-error")
             .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
+    @Test
+    void returns_an_error_response_when_an_unexpected_error_occurs() {
+        givenException(new RuntimeException("An unexpected error occurred"));
+
+        var request = anyCreateHotelRequest();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("Unexpected error")
+            .type("unexpected-error")
+            .status(500)
             .build();
 
         assertThat(response).isEqualTo(expected);
