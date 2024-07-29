@@ -29,13 +29,22 @@ public class CreateHotelCommandGenerator {
         return this;
     }
 
+    public CreateHotelCommandGenerator invalidId() {
+        this.id = null;
+        return this;
+    }
+
     public CreateHotelCommandGenerator name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public CreateHotelCommandGenerator invalidName() {
+        this.name = null;
         return this;
     }
 
     public CreateHotelCommand build() {
         return new CreateHotelCommand(id, name);
     }
-
 }

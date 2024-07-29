@@ -1,6 +1,8 @@
 package hotel_management.hotel_manager.application.commands.create_hotel;
 
 import hotel_management.hotel_manager.domain.HotelRepository;
+import hotel_management.hotel_manager.domain.InvalidHotelId;
+import hotel_management.hotel_manager.domain.InvalidHotelName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +42,28 @@ class CreateHotelHandlerTest {
             .build();
 
         verify(repository).save(hotel);
+    }
+
+    @Test
+    void throws_an_exception_when_the_hotel_name_is_invalid() {
+        var command = createHotelCommand()
+            .invalidName()
+            .build();
+
+        assertThatException()
+            .isThrownBy(() -> handler.execute(command))
+            .isInstanceOf(InvalidHotelName.class);
+    }
+
+    @Test
+    void throws_an_exception_when_the_hotel_id_is_invalid() {
+        var command = createHotelCommand()
+            .invalidId()
+            .build();
+
+        assertThatException()
+            .isThrownBy(() -> handler.execute(command))
+            .isInstanceOf(InvalidHotelId.class);
     }
 
 }
