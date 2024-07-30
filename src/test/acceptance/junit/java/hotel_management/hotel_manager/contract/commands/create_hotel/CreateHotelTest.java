@@ -44,7 +44,6 @@ public class CreateHotelTest {
     }
 
     @Test
-    @Disabled
     void throws_an_exception_when_the_command_is_invalid() {
         var createHotel = createHotelCommand()
             .blankName()
