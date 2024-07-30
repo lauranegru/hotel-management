@@ -1,5 +1,7 @@
 package hotel_management.hotel_manager.domain;
 
+import java.util.Objects;
+
 public class HotelName {
 
     private final String value;
@@ -23,6 +25,25 @@ public class HotelName {
 
     public String value() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return (object instanceof HotelName that)
+               && Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("HotelName{")
+            .append("value='").append(value).append('\'')
+            .append('}')
+            .toString();
     }
 
 }

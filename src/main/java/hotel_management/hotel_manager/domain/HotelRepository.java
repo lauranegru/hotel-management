@@ -1,11 +1,10 @@
 package hotel_management.hotel_manager.domain;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface HotelRepository {
 
-    Optional<Hotel> find(UUID id);
+    Optional<Hotel> find(HotelId id);
 
     void save(Hotel hotel);
 

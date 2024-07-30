@@ -8,8 +8,8 @@ public class HotelMapper {
 
     public HotelView toView(Hotel hotel) {
         return new HotelView(
-            hotel.id(),
-            hotel.name()
+            hotel.id().value(),
+            hotel.name().value()
         );
     }
 

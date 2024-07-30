@@ -6,8 +6,8 @@ public class HotelGenerator {
 
     private static Integer uniqueId = 1;
 
-    private UUID id;
-    private String name;
+    private HotelId id;
+    private HotelName name;
 
     private HotelGenerator() {
         id(UUID.randomUUID());
@@ -24,17 +24,22 @@ public class HotelGenerator {
     }
 
     public HotelGenerator id(UUID id) {
-        this.id = id;
+        this.id = HotelId.of(id);
         return this;
     }
 
     public HotelGenerator id(String id) {
-        this.id = UUID.fromString(id);
+        this.id = HotelId.of(UUID.fromString(id));
+        return this;
+    }
+
+    public HotelGenerator id(HotelId id) {
+        this.id = id;
         return this;
     }
 
     public HotelGenerator name(String name) {
-        this.name = name;
+        this.name = HotelName.of(name);
         return this;
     }
 
