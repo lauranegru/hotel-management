@@ -8,7 +8,7 @@ public class HotelName {
 
     private HotelName(String value) {
         if (value == null)
-            throw new InvalidHotelName("The hotel name should not be null");
+            throw new InvalidHotelName("The hotel name should not be missing");
 
         if (value.isBlank())
             throw new InvalidHotelName("The hotel name should not be blank");

@@ -9,7 +9,7 @@ public class HotelId {
 
     private HotelId(UUID value) {
         if (value == null)
-            throw new InvalidHotelId("The hotel id should not be null");
+            throw new InvalidHotelId("The hotel id should not be missing");
 
         this.value = value;
     }

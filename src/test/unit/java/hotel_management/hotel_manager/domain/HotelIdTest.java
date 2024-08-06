@@ -21,7 +21,7 @@ class HotelIdTest {
         assertThatException()
             .isThrownBy(() -> HotelId.of(null))
             .isInstanceOf(InvalidHotelId.class)
-            .withMessage("The hotel id should not be null");
+            .withMessage("The hotel id should not be missing");
     }
 
 }

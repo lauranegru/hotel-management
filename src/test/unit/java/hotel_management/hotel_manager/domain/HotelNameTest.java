@@ -36,7 +36,7 @@ class HotelNameTest {
         assertThatException()
             .isThrownBy(() -> HotelName.of(null))
             .isInstanceOf(InvalidHotelName.class)
-            .withMessage("The hotel name should not be null");
+            .withMessage("The hotel name should not be missing");
     }
 
     @Test
