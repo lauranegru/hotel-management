@@ -4,12 +4,14 @@ import hotel_management.hotel_manager.service.queries.get_hotel.GetHotelQuery;
 
 import java.util.UUID;
 
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+
 public class GetHotelQueryGenerator {
 
     private UUID id;
 
     private GetHotelQueryGenerator() {
-        id(UUID.randomUUID());
+        id(anyHotelIdValue());
     }
 
     public static GetHotelQueryGenerator getHotelQuery() {

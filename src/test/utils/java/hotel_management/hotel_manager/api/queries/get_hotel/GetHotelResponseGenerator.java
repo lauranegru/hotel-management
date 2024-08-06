@@ -5,12 +5,12 @@ import hotel_management.shared.api.rest.RestResponse;
 
 import java.util.UUID;
 
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+import static hotel_management.hotel_manager.domain.HotelNameGenerator.anyHotelNameValue;
 import static hotel_management.shared.api.rest.JsonGenerator.json;
 import static hotel_management.shared.api.rest.RestResponseGenerator.response;
 
 public class GetHotelResponseGenerator {
-
-    private static Integer uniqueId = 1;
 
     private Integer status;
     private final JsonGenerator json;
@@ -18,9 +18,8 @@ public class GetHotelResponseGenerator {
     private GetHotelResponseGenerator() {
         json = json();
         status(200);
-        id(UUID.randomUUID().toString());
-        name("Hotel " + uniqueId);
-        uniqueId++;
+        id(anyHotelIdValue());
+        name(anyHotelNameValue());
     }
 
     public static GetHotelResponseGenerator getHotelResponse() {
@@ -34,6 +33,11 @@ public class GetHotelResponseGenerator {
 
     public GetHotelResponseGenerator id(String id) {
         json.set("id", id);
+        return this;
+    }
+
+    public GetHotelResponseGenerator id(UUID id) {
+        json.set("id", id.toString());
         return this;
     }
 

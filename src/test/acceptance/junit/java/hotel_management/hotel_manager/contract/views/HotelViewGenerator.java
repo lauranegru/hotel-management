@@ -4,17 +4,17 @@ import hotel_management.hotel_manager.service.views.HotelView;
 
 import java.util.UUID;
 
-public class HotelViewGenerator {
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+import static hotel_management.hotel_manager.domain.HotelNameGenerator.anyHotelNameValue;
 
-    private static Integer uniqueId = 1;
+public class HotelViewGenerator {
 
     private UUID id;
     private String name;
 
     private HotelViewGenerator() {
-        id(UUID.randomUUID());
-        name("Hotel " + uniqueId);
-        uniqueId++;
+        id(anyHotelIdValue());
+        name(anyHotelNameValue());
     }
 
     public static HotelViewGenerator hotelView() {

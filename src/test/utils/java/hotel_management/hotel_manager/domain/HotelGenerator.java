@@ -2,17 +2,17 @@ package hotel_management.hotel_manager.domain;
 
 import java.util.UUID;
 
-public class HotelGenerator {
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+import static hotel_management.hotel_manager.domain.HotelNameGenerator.anyHotelNameValue;
 
-    private static Integer uniqueId = 1;
+public class HotelGenerator {
 
     private HotelId id;
     private HotelName name;
 
     private HotelGenerator() {
-        id(UUID.randomUUID());
-        name("Hotel " + uniqueId);
-        uniqueId++;
+        id(anyHotelIdValue());
+        name(anyHotelNameValue());
     }
 
     public static Hotel anyHotel() {

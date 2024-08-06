@@ -2,17 +2,17 @@ package hotel_management.hotel_manager.infrastructure.persistence.mongodb;
 
 import java.util.UUID;
 
-public class MongoHotelGenerator {
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+import static hotel_management.hotel_manager.domain.HotelNameGenerator.anyHotelNameValue;
 
-    private static Integer uniqueId = 1;
+public class MongoHotelGenerator {
 
     private UUID id;
     private String name;
 
     private MongoHotelGenerator() {
-        id(UUID.randomUUID());
-        name("Hotel " + uniqueId);
-        uniqueId++;
+        id(anyHotelIdValue());
+        name(anyHotelNameValue());
     }
 
     public static MongoHotelGenerator mongoHotel() {

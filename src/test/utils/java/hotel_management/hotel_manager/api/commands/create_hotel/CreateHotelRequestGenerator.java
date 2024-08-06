@@ -6,20 +6,19 @@ import hotel_management.shared.api.rest.RestRequest;
 import java.util.List;
 import java.util.UUID;
 
+import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
+import static hotel_management.hotel_manager.domain.HotelNameGenerator.anyHotelNameValue;
 import static hotel_management.shared.api.rest.JsonGenerator.json;
 import static hotel_management.shared.api.rest.RestRequestGenerator.request;
 
 public class CreateHotelRequestGenerator {
 
-    private static Integer uniqueId = 1;
-
     private final JsonGenerator json;
 
     private CreateHotelRequestGenerator() {
         json = json();
-        id(UUID.randomUUID());
-        name("Hotel " + uniqueId);
-        uniqueId++;
+        id(anyHotelIdValue());
+        name(anyHotelNameValue());
     }
 
     public static CreateHotelRequestGenerator createHotelRequest() {
