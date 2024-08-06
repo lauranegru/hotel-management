@@ -2,6 +2,7 @@ package hotel_management.hotel_manager.api.commands.create_hotel;
 
 import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommand;
 import hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelHandler;
+import hotel_management.hotel_manager.domain.HotelAlreadyExists;
 import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.hotel_manager.domain.InvalidHotelName;
 import hotel_management.shared.api.rest.RestClient;
@@ -71,6 +72,23 @@ class CreateHotelControllerTest {
             .build();
 
         verify(handler).execute(command);
+    }
+
+    @Test
+    void returns_an_error_response_when_the_hotel_already_exists() {
+        givenException(new HotelAlreadyExists("The hotel with the given id already exists"));
+
+        var request = anyCreateHotelRequest();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The hotel with the given id already exists")
+            .type("hotel-already-exists")
+            .status(409)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
     }
 
     @Test
