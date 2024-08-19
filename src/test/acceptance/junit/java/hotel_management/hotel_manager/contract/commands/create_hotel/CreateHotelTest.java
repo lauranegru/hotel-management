@@ -1,7 +1,8 @@
 package hotel_management.hotel_manager.contract.commands.create_hotel;
 
+import hotel_management.hotel_manager.domain.HotelRepository;
 import hotel_management.hotel_manager.service.HotelService;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,14 @@ public class CreateHotelTest {
 
     @Autowired
     private HotelService service;
+
+    @Autowired
+    private HotelRepository repository;
+
+    @AfterEach
+    void tearDown() {
+        repository.delete();
+    }
 
     @Test
     void creates_the_hotel_when_the_command_is_valid() {
@@ -62,7 +71,6 @@ public class CreateHotelTest {
     }
 
     @Test
-    @Disabled
     void throws_an_exception_when_the_hotel_already_exists() {
         var createHotelOne = createHotelCommand()
             .id("685cd9b3-4788-49d1-a754-cd1130b795a4")
