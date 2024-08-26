@@ -36,6 +36,7 @@ public class HotelService {
             .accept(APPLICATION_JSON)
             .retrieve()
             .bodyToMono(HotelView.class)
+            .transform(translator::translate)
             .block();
     }
 
