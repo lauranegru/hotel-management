@@ -18,6 +18,7 @@ import static hotel_management.hotel_manager.api.queries.get_hotel.GetHotelReque
 import static hotel_management.hotel_manager.api.queries.get_hotel.GetHotelResponseGenerator.getHotelResponse;
 import static hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQueryGenerator.getHotelQuery;
 import static hotel_management.hotel_manager.application.views.HotelViewGenerator.hotelView;
+import static hotel_management.shared.api.rest.RestErrorGenerator.errorResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -62,7 +63,8 @@ class GetHotelControllerTest {
             .name("The Mallorca Hotel")
             .build();
 
-        given(handler.execute(any(GetHotelQuery.class)))
+        given(handler
+            .execute(any(GetHotelQuery.class)))
             .willReturn(Optional.of(view));
 
         var response = client.send(anyGetHotelRequest());
@@ -71,6 +73,23 @@ class GetHotelControllerTest {
             .status(200)
             .id("685cd9b3-4788-49d1-a754-cd1130b795a4")
             .name("The Mallorca Hotel")
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
+    @Test
+    void returns_an_error_response_when_the_hotel_does_not_exist() {
+        given(handler
+            .execute(any(GetHotelQuery.class)))
+            .willReturn(Optional.empty());
+
+        var response = client.send(anyGetHotelRequest());
+
+        var expected = errorResponse()
+            .message("The hotel with the given id does not exist")
+            .type("hotel-not-found")
+            .status(404)
             .build();
 
         assertThat(response).isEqualTo(expected);

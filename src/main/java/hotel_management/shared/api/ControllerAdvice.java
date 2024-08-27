@@ -2,6 +2,7 @@ package hotel_management.shared.api;
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import hotel_management.hotel_manager.domain.HotelAlreadyExists;
+import hotel_management.hotel_manager.domain.HotelNotFound;
 import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.hotel_manager.domain.InvalidHotelName;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import static hotel_management.shared.api.ErrorResponseBuilder.errorResponse;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -44,6 +46,15 @@ public class ControllerAdvice {
     public ErrorResponse handle(HotelAlreadyExists exception) {
         return errorResponse()
             .type("hotel-already-exists")
+            .message(exception.getMessage())
+            .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(HotelNotFound.class)
+    public ErrorResponse handle(HotelNotFound exception) {
+        return errorResponse()
+            .type("hotel-not-found")
             .message(exception.getMessage())
             .build();
     }
