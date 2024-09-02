@@ -10,10 +10,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQueryGenerator.anyGetHotelQuery;
 import static hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQueryGenerator.getHotelQuery;
 import static hotel_management.hotel_manager.application.views.HotelViewGenerator.hotelView;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,6 +61,19 @@ class GetHotelHandlerTest {
         var result = handler.execute(query);
 
         assertThat(result).contains(view);
+    }
+
+    @Test
+    void returns_no_hotel_when_the_hotel_does_not_exist() {
+        var query = anyGetHotelQuery();
+
+        when(repository
+            .find(any()))
+            .thenReturn(Optional.empty());
+
+        var result = handler.execute(query);
+
+        assertThat(result).isEmpty();
     }
 
 }

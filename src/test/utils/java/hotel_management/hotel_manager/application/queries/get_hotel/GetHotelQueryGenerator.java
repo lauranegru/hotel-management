@@ -1,5 +1,7 @@
 package hotel_management.hotel_manager.application.queries.get_hotel;
 
+import hotel_management.hotel_manager.domain.Hotel;
+
 import java.util.UUID;
 
 import static hotel_management.hotel_manager.domain.HotelIdGenerator.anyHotelIdValue;
@@ -10,6 +12,10 @@ public class GetHotelQueryGenerator {
 
     private GetHotelQueryGenerator() {
         id(anyHotelIdValue());
+    }
+
+    public static GetHotelQuery anyGetHotelQuery() {
+        return getHotelQuery().build();
     }
 
     public static GetHotelQueryGenerator getHotelQuery() {
