@@ -54,7 +54,6 @@ public class GetHotelTest {
     }
 
     @Test
-    @Disabled
     void throws_an_exception_when_the_hotel_does_not_exist() {
         var query = getHotelQuery()
             .id("46f75501-563d-4bc0-8922-2ea8dc0e1d67")
