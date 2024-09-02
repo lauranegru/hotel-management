@@ -26,12 +26,9 @@ class GetHotelHandlerTest {
     @Mock
     private HotelRepository repository;
 
-    @Mock
-    private HotelMapper mapper;
-
     @BeforeEach
     void setUp() {
-        handler = new GetHotelHandler(repository, mapper);
+        handler = new GetHotelHandler(repository, new HotelMapper());
     }
 
     @Test
@@ -53,10 +50,6 @@ class GetHotelHandlerTest {
         when(repository
             .find(hotel.id()))
             .thenReturn(Optional.of(hotel));
-
-        when(mapper
-            .toView(hotel))
-            .thenReturn(view);
 
         var result = handler.execute(query);
 
