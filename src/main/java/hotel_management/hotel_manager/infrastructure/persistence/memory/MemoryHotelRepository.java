@@ -5,6 +5,7 @@ import hotel_management.hotel_manager.domain.HotelId;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +22,8 @@ public class MemoryHotelRepository implements HotelRepository {
     }
 
     @Override
-    public Optional<Hotel> find(HotelId id) {
-        return Optional.ofNullable(hotels.get(id));
+    public Mono<Hotel> find(HotelId id) {
+        return Mono.fromSupplier(() -> hotels.get(id));
     }
 
     @Override

@@ -7,6 +7,8 @@ import hotel_management.hotel_manager.domain.HotelNotFound;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -21,9 +23,11 @@ public class GetHotelController {
 
     @ResponseStatus(OK)
     @GetMapping("/hotels/queries/get-hotel")
-    public HotelView execute(GetHotelQuery query) {
-        return handler.execute(query)
-            .orElseThrow(() -> new HotelNotFound("The hotel with the given id does not exist"));
+    public Mono<HotelView> execute(GetHotelQuery query) {
+        return Mono.fromSupplier(() ->
+            handler.execute(query)
+            .orElseThrow(() -> new HotelNotFound("The hotel with the given id does not exist"))
+        ).subscribeOn(Schedulers.boundedElastic());
     }
 
 }

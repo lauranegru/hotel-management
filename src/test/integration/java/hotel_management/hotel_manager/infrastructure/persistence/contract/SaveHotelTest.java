@@ -33,6 +33,7 @@ public abstract class SaveHotelTest {
 
         var result = repository
             .find(hotel.id())
+            .blockOptional()
             .orElseThrow();
 
         assertThat(result).isEqualTo(hotel);
@@ -51,6 +52,7 @@ public abstract class SaveHotelTest {
 
         var result = repository
             .find(existing.id())
+            .blockOptional()
             .orElseThrow();
 
         assertThat(result).isEqualTo(updated);
@@ -71,6 +73,7 @@ public abstract class SaveHotelTest {
 
         var result = repository
             .find(existing.id())
+            .blockOptional()
             .orElseThrow();
 
         assertThat(result).isEqualTo(existing);

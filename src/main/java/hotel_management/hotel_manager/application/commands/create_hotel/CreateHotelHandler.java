@@ -22,7 +22,9 @@ public class CreateHotelHandler {
             HotelName.of(command.name())
         );
 
-        var existing = repository.find(hotel.id());
+        var existing = repository
+            .find(hotel.id())
+            .blockOptional();
 
         if (existing.isPresent())
             throw new HotelAlreadyExists("The hotel with the given id already exists");

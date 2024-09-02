@@ -1,10 +1,10 @@
 package hotel_management.hotel_manager.domain;
 
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 public interface HotelRepository {
 
-    Optional<Hotel> find(HotelId id);
+    Mono<Hotel> find(HotelId id);
 
     void save(Hotel hotel);
 

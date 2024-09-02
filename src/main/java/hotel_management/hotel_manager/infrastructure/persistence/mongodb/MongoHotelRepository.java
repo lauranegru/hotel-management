@@ -6,8 +6,6 @@ import hotel_management.hotel_manager.domain.HotelRepository;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Component
 public class MongoHotelRepository implements HotelRepository {
 
@@ -23,10 +21,9 @@ public class MongoHotelRepository implements HotelRepository {
     }
 
     @Override
-    public Optional<Hotel> find(HotelId id) {
+    public Mono<Hotel> find(HotelId id) {
         return repository.findById(id.value())
-            .map(mapper::toHotel)
-            .blockOptional();
+            .map(mapper::toHotel);
     }
 
     @Override

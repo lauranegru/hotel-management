@@ -21,7 +21,8 @@ public class GetHotelHandler {
 
     public Optional<HotelView> execute(GetHotelQuery query) {
         return repository.find(HotelId.of(query.id()))
-            .map(mapper::toView);
+            .map(mapper::toView)
+            .blockOptional();
     }
 
 }

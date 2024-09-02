@@ -38,7 +38,9 @@ public abstract class DeleteHotelTest {
         repository.save(hotel);
         repository.delete();
 
-        var result = repository.find(hotel.id());
+        var result = repository
+            .find(hotel.id())
+            .blockOptional();
 
         assertThat(result).isEmpty();
     }
@@ -53,8 +55,13 @@ public abstract class DeleteHotelTest {
 
         repository.delete();
 
-        var resultOne = repository.find(hotelOne.id());
-        var resultTwo = repository.find(hotelTwo.id());
+        var resultOne = repository
+            .find(hotelOne.id())
+            .blockOptional();
+
+        var resultTwo = repository
+            .find(hotelTwo.id())
+            .blockOptional();
 
         assertThat(resultOne).isEmpty();
         assertThat(resultTwo).isEmpty();

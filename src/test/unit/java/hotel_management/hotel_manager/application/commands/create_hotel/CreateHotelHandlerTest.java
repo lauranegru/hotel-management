@@ -1,6 +1,7 @@
 package hotel_management.hotel_manager.application.commands.create_hotel;
 
 import hotel_management.hotel_manager.domain.HotelAlreadyExists;
+import hotel_management.hotel_manager.domain.HotelId;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.hotel_manager.domain.InvalidHotelName;
@@ -9,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
@@ -38,6 +38,10 @@ class CreateHotelHandlerTest {
             .name("The Mallorca Hotel")
             .build();
 
+        given(repository
+            .find(HotelId.of(command.id())))
+            .willReturn(Mono.empty());
+
         handler.execute(command);
 
         var hotel = hotel()
@@ -60,7 +64,7 @@ class CreateHotelHandlerTest {
 
         given(repository
             .find(hotel.id()))
-            .willReturn(Optional.of(hotel));
+            .willReturn(Mono.just(hotel));
 
         assertThatException()
             .isThrownBy(() -> handler.execute(command))

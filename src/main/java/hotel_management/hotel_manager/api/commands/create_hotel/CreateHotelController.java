@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -20,8 +23,9 @@ public class CreateHotelController {
 
     @ResponseStatus(CREATED)
     @PostMapping("/hotels/commands/create-hotel")
-    public void create(@RequestBody CreateHotelCommand command) {
-        handler.execute(command);
+    public Mono<Void> create(@RequestBody CreateHotelCommand command) {
+        return Mono.<Void>fromRunnable(() -> handler.execute(command))
+            .subscribeOn(Schedulers.boundedElastic());
     }
 
 }

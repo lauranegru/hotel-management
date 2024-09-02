@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ class GetHotelHandlerTest {
 
         when(repository
             .find(hotel.id()))
-            .thenReturn(Optional.of(hotel));
+            .thenReturn(Mono.just(hotel));
 
         var result = handler.execute(query);
 
@@ -62,7 +63,7 @@ class GetHotelHandlerTest {
 
         when(repository
             .find(any()))
-            .thenReturn(Optional.empty());
+            .thenReturn(Mono.empty());
 
         var result = handler.execute(query);
 

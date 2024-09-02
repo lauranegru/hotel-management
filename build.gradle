@@ -410,6 +410,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('io.projectreactor:reactor-test')
 
     acceptanceCucumberImplementation('io.cucumber:cucumber-java')
     acceptanceCucumberImplementation('io.cucumber:cucumber-spring')

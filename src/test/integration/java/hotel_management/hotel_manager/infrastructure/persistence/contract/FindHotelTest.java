@@ -34,6 +34,7 @@ public abstract class FindHotelTest {
 
         var result = repository
             .find(hotel.id())
+            .blockOptional()
             .orElseThrow();
 
         assertThat(result).isEqualTo(hotel);
@@ -48,7 +49,8 @@ public abstract class FindHotelTest {
         repository.save(anyHotel());
 
         var result = repository
-            .find(hotel.id());
+            .find(hotel.id())
+            .blockOptional();
 
         assertThat(result).isEmpty();
     }
@@ -58,7 +60,8 @@ public abstract class FindHotelTest {
         var hotel = anyHotel();
 
         var result = repository
-            .find(hotel.id());
+            .find(hotel.id())
+            .blockOptional();
 
         assertThat(result).isEmpty();
     }
