@@ -4,9 +4,9 @@ import hotel_management.hotel_manager.domain.HotelRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class FindHotelTest {
 
@@ -32,12 +32,11 @@ public abstract class FindHotelTest {
         repository.save(anyHotel());
         repository.save(anyHotel());
 
-        var result = repository
-            .find(hotel.id())
-            .blockOptional()
-            .orElseThrow();
+        var result = repository.find(hotel.id());
 
-        assertThat(result).isEqualTo(hotel);
+        StepVerifier.create(result)
+            .expectNext(hotel)
+            .verifyComplete();
     }
 
     @Test
@@ -48,22 +47,20 @@ public abstract class FindHotelTest {
         repository.save(anyHotel());
         repository.save(anyHotel());
 
-        var result = repository
-            .find(hotel.id())
-            .blockOptional();
+        var result = repository.find(hotel.id());
 
-        assertThat(result).isEmpty();
+        StepVerifier.create(result)
+            .verifyComplete();
     }
 
     @Test
     void returns_no_hotel_when_no_hotels_exist() {
         var hotel = anyHotel();
 
-        var result = repository
-            .find(hotel.id())
-            .blockOptional();
+        var result = repository.find(hotel.id());
 
-        assertThat(result).isEmpty();
+        StepVerifier.create(result)
+            .verifyComplete();
     }
 
 }

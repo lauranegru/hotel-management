@@ -4,10 +4,10 @@ import hotel_management.hotel_manager.domain.HotelRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class SaveHotelTest {
 
@@ -31,12 +31,11 @@ public abstract class SaveHotelTest {
 
         repository.save(hotel);
 
-        var result = repository
-            .find(hotel.id())
-            .blockOptional()
-            .orElseThrow();
+        var result = repository.find(hotel.id());
 
-        assertThat(result).isEqualTo(hotel);
+        StepVerifier.create(result)
+            .expectNext(hotel)
+            .verifyComplete();
     }
 
     @Test
@@ -50,12 +49,11 @@ public abstract class SaveHotelTest {
         repository.save(existing);
         repository.save(updated);
 
-        var result = repository
-            .find(existing.id())
-            .blockOptional()
-            .orElseThrow();
+        var result = repository.find(existing.id());
 
-        assertThat(result).isEqualTo(updated);
+        StepVerifier.create(result)
+            .expectNext(updated)
+            .verifyComplete();
     }
 
     @Test
@@ -71,12 +69,11 @@ public abstract class SaveHotelTest {
         repository.save(target);
         repository.save(updated);
 
-        var result = repository
-            .find(existing.id())
-            .blockOptional()
-            .orElseThrow();
+        var result = repository.find(existing.id());
 
-        assertThat(result).isEqualTo(existing);
+        StepVerifier.create(result)
+            .expectNext(existing)
+            .verifyComplete();
     }
 
 }

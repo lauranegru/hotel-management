@@ -4,9 +4,9 @@ import hotel_management.hotel_manager.domain.HotelRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public abstract class DeleteHotelTest {
@@ -38,11 +38,10 @@ public abstract class DeleteHotelTest {
         repository.save(hotel);
         repository.delete();
 
-        var result = repository
-            .find(hotel.id())
-            .blockOptional();
+        var result = repository.find(hotel.id());
 
-        assertThat(result).isEmpty();
+        StepVerifier.create(result)
+            .verifyComplete();
     }
 
     @Test
@@ -55,16 +54,11 @@ public abstract class DeleteHotelTest {
 
         repository.delete();
 
-        var resultOne = repository
-            .find(hotelOne.id())
-            .blockOptional();
+        var resultOne = repository.find(hotelOne.id());
+        var resultTwo = repository.find(hotelTwo.id());
 
-        var resultTwo = repository
-            .find(hotelTwo.id())
-            .blockOptional();
-
-        assertThat(resultOne).isEmpty();
-        assertThat(resultTwo).isEmpty();
+        StepVerifier.create(resultOne).verifyComplete();
+        StepVerifier.create(resultTwo).verifyComplete();
     }
 
 }
