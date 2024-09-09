@@ -52,29 +52,14 @@ sourceSets {
 
     }
 
-    acceptanceCucumber {
+    acceptance {
 
         java {
-            srcDirs(file('src/test/acceptance/cucumber/java'))
+            srcDirs(file('src/test/acceptance/java'))
         }
 
         resources {
-            srcDirs(file('src/test/acceptance/cucumber/resources'))
-        }
-
-        compileClasspath += main.output + utils.output
-        runtimeClasspath += main.output + utils.output
-
-    }
-
-    acceptanceJunit {
-
-        java {
-            srcDirs(file('src/test/acceptance/junit/java'))
-        }
-
-        resources {
-            srcDirs(file('src/test/acceptance/junit/resources'))
+            srcDirs(file('src/test/acceptance/resources'))
         }
 
         compileClasspath += main.output + utils.output
@@ -128,27 +113,15 @@ configurations {
         extendsFrom(testCompileOnly)
     }
 
-    acceptanceCucumberImplementation {
+    acceptanceImplementation {
         extendsFrom(testImplementation)
     }
 
-    acceptanceCucumberRuntimeOnly {
+    acceptanceRuntimeOnly {
         extendsFrom(testRuntimeOnly)
     }
 
-    acceptanceCucumberCompileOnly {
-        extendsFrom(testCompileOnly)
-    }
-
-    acceptanceJunitImplementation {
-        extendsFrom(testImplementation)
-    }
-
-    acceptanceJunitRuntimeOnly {
-        extendsFrom(testRuntimeOnly)
-    }
-
-    acceptanceJunitCompileOnly {
+    acceptanceCompileOnly {
         extendsFrom(testCompileOnly)
     }
 
@@ -160,21 +133,18 @@ idea {
             sourceSets.utils.java.srcDirs,
             sourceSets.unit.java.srcDirs,
             sourceSets.integration.java.srcDirs,
-            sourceSets.acceptanceCucumber.java.srcDirs,
-            sourceSets.acceptanceJunit.java.srcDirs
+            sourceSets.acceptance.java.srcDirs
         )
     }
 }
 
 tasks.register('unit', Test)
 tasks.register('integration', Test)
-tasks.register('acceptanceCucumber', Test)
-tasks.register('acceptanceJunit', Test)
+tasks.register('acceptance', Test)
 tasks.register('junitTestReport', TestReport)
 tasks.register('jacocoUnitTestReport', JacocoReport)
 tasks.register('jacocoIntegrationTestReport', JacocoReport)
-tasks.register('jacocoAcceptanceCucumberTestReport', JacocoReport)
-tasks.register('jacocoAcceptanceJunitTestReport', JacocoReport)
+tasks.register('jacocoAcceptanceTestReport', JacocoReport)
 
 unit {
 
@@ -220,58 +190,21 @@ integration {
 
 }
 
-acceptanceCucumber {
+acceptance {
 
     useJUnitPlatform()
 
-    setTestClassesDirs(sourceSets.acceptanceCucumber.output.classesDirs)
-    setClasspath(sourceSets.acceptanceCucumber.runtimeClasspath)
-
-    systemProperty('cucumber.plugin', 'pretty, html:build/reports/cucumber/report.html')
+    setTestClassesDirs(sourceSets.acceptance.output.classesDirs)
+    setClasspath(sourceSets.acceptance.runtimeClasspath)
 
     reports {
         html.outputLocation.set(
-            file('build/reports/junit/acceptance/cucumber')
-        )
-    }
-
-    testLogging {
-        events("STANDARD_OUT")
-    }
-
-    testlogger {
-        showExceptions(false)
-        showPassed(false)
-        showSkipped(false)
-        showFailed(false)
-        showSummary(false)
-    }
-
-    finalizedBy(
-        jacocoAcceptanceCucumberTestReport,
-        jacocoTestReport,
-        junitTestReport
-    )
-
-    shouldRunAfter(integration)
-
-}
-
-acceptanceJunit {
-
-    useJUnitPlatform()
-
-    setTestClassesDirs(sourceSets.acceptanceJunit.output.classesDirs)
-    setClasspath(sourceSets.acceptanceJunit.runtimeClasspath)
-
-    reports {
-        html.outputLocation.set(
-            file('build/reports/junit/acceptance/junit')
+            file('build/reports/junit/acceptance')
         )
     }
 
     finalizedBy(
-        jacocoAcceptanceJunitTestReport,
+        jacocoAcceptanceTestReport,
         jacocoTestReport,
         junitTestReport
     )
@@ -281,7 +214,7 @@ acceptanceJunit {
 }
 
 test {
-    dependsOn(unit, integration, acceptanceCucumber, acceptanceJunit)
+    dependsOn(unit, integration, acceptance)
 }
 
 jacocoUnitTestReport {
@@ -316,41 +249,25 @@ jacocoIntegrationTestReport {
 
 }
 
-jacocoAcceptanceCucumberTestReport {
+jacocoAcceptanceTestReport {
 
-    executionData(acceptanceCucumber)
+    executionData(acceptance)
     sourceSets(sourceSets.main)
 
     reports {
         html.required.set(true)
         html.outputLocation.set(
-            file('build/reports/jacoco/acceptance/cucumber')
+            file('build/reports/jacoco/acceptance')
         )
     }
 
-    shouldRunAfter(acceptanceCucumber)
-
-}
-
-jacocoAcceptanceJunitTestReport {
-
-    executionData(acceptanceJunit)
-    sourceSets(sourceSets.main)
-
-    reports {
-        html.required.set(true)
-        html.outputLocation.set(
-            file('build/reports/jacoco/acceptance/junit')
-        )
-    }
-
-    shouldRunAfter(acceptanceJunit)
+    shouldRunAfter(acceptance)
 
 }
 
 jacocoTestReport {
 
-    executionData(unit, integration, acceptanceCucumber, acceptanceJunit)
+    executionData(unit, integration, acceptance)
     sourceSets(sourceSets.main)
 
     reports {
@@ -363,8 +280,7 @@ jacocoTestReport {
     shouldRunAfter(
         jacocoUnitTestReport,
         jacocoIntegrationTestReport,
-        jacocoAcceptanceCucumberTestReport,
-        jacocoAcceptanceJunitTestReport
+        jacocoAcceptanceTestReport
     )
 
 }
@@ -378,11 +294,10 @@ junitTestReport {
     testResults.from(
         file('build/test-results/unit/binary'),
         file('build/test-results/integration/binary'),
-        file('build/test-results/acceptanceCucumber/binary'),
-        file('build/test-results/acceptanceJunit/binary')
+        file('build/test-results/acceptance/binary')
     )
 
-    shouldRunAfter(unit, integration, acceptanceCucumber, acceptanceJunit)
+    shouldRunAfter(unit, integration, acceptance)
 
 }
 
@@ -411,11 +326,6 @@ dependencies {
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('io.projectreactor:reactor-test')
-
-    acceptanceCucumberImplementation('io.cucumber:cucumber-java')
-    acceptanceCucumberImplementation('io.cucumber:cucumber-spring')
-    acceptanceCucumberImplementation('io.cucumber:cucumber-junit-platform-engine')
-    acceptanceCucumberImplementation("org.junit.platform:junit-platform-suite")
 }
 
 version = '0.0.1'

@@ -65,11 +65,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Execute Cucumber Acceptance Tests
-        run: ./gradlew acceptanceCucumber
-
-      - name: Execute Junit Acceptance Tests
-        run: ./gradlew acceptanceJunit
+      - name: Execute Acceptance Tests
+        run: ./gradlew acceptance
 
   build:
     needs: [ unit, integration, acceptance ]
