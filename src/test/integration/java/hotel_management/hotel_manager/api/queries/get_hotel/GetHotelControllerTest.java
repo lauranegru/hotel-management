@@ -10,8 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 import static hotel_management.hotel_manager.api.queries.get_hotel.GetHotelRequestGenerator.anyGetHotelRequest;
 import static hotel_management.hotel_manager.api.queries.get_hotel.GetHotelRequestGenerator.getHotelRequest;
@@ -65,7 +64,7 @@ class GetHotelControllerTest {
 
         given(handler
             .execute(any(GetHotelQuery.class)))
-            .willReturn(Optional.of(view));
+            .willReturn(Mono.just(view));
 
         var response = client.send(anyGetHotelRequest());
 
@@ -82,7 +81,7 @@ class GetHotelControllerTest {
     void returns_an_error_response_when_the_hotel_does_not_exist() {
         given(handler
             .execute(any(GetHotelQuery.class)))
-            .willReturn(Optional.empty());
+            .willReturn(Mono.empty());
 
         var response = client.send(anyGetHotelRequest());
 

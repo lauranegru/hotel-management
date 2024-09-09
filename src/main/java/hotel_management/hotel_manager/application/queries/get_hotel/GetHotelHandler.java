@@ -5,8 +5,7 @@ import hotel_management.hotel_manager.application.views.HotelView;
 import hotel_management.hotel_manager.domain.HotelId;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Component
 public class GetHotelHandler {
@@ -19,10 +18,9 @@ public class GetHotelHandler {
         this.mapper = mapper;
     }
 
-    public Optional<HotelView> execute(GetHotelQuery query) {
+    public Mono<HotelView> execute(GetHotelQuery query) {
         return repository.find(HotelId.of(query.id()))
-            .map(mapper::toView)
-            .blockOptional();
+            .map(mapper::toView);
     }
 
 }

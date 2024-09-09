@@ -26,7 +26,8 @@ public class GetHotelController {
     public Mono<HotelView> execute(GetHotelQuery query) {
         return Mono.fromSupplier(() ->
             handler.execute(query)
-            .orElseThrow(() -> new HotelNotFound("The hotel with the given id does not exist"))
+                .blockOptional()
+                .orElseThrow(() -> new HotelNotFound("The hotel with the given id does not exist"))
         ).subscribeOn(Schedulers.boundedElastic());
     }
 

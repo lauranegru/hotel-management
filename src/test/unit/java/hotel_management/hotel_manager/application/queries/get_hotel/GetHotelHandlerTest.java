@@ -8,16 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
+import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQueryGenerator.anyGetHotelQuery;
 import static hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQueryGenerator.getHotelQuery;
 import static hotel_management.hotel_manager.application.views.HotelViewGenerator.hotelView;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class GetHotelHandlerTest {
@@ -48,26 +46,29 @@ class GetHotelHandlerTest {
             .name("The Mallorca Hotel")
             .build();
 
-        when(repository
+        given(repository
             .find(hotel.id()))
-            .thenReturn(Mono.just(hotel));
+            .willReturn(Mono.just(hotel));
 
         var result = handler.execute(query);
 
-        assertThat(result).contains(view);
+        StepVerifier.create(result)
+            .expectNext(view)
+            .verifyComplete();
     }
 
     @Test
     void returns_no_hotel_when_the_hotel_does_not_exist() {
         var query = anyGetHotelQuery();
 
-        when(repository
+        given(repository
             .find(any()))
-            .thenReturn(Mono.empty());
+            .willReturn(Mono.empty());
 
         var result = handler.execute(query);
 
-        assertThat(result).isEmpty();
+        StepVerifier.create(result)
+            .verifyComplete();
     }
 
 }
