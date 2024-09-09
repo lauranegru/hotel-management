@@ -29,7 +29,7 @@ public class CreateHotelHandler {
         if (existing.isPresent())
             throw new HotelAlreadyExists("The hotel with the given id already exists");
 
-        repository.save(hotel);
+        repository.save(hotel).block();
     }
 
 }

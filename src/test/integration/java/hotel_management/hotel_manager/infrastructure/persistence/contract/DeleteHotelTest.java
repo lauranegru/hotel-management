@@ -35,7 +35,7 @@ public abstract class DeleteHotelTest {
     void deletes_the_hotel_when_a_single_hotel_exists() {
         var hotel = anyHotel();
 
-        repository.save(hotel);
+        repository.save(hotel).block();
         repository.delete();
 
         var result = repository.find(hotel.id());
@@ -49,8 +49,8 @@ public abstract class DeleteHotelTest {
         var hotelOne = anyHotel();
         var hotelTwo = anyHotel();
 
-        repository.save(hotelOne);
-        repository.save(hotelTwo);
+        repository.save(hotelOne).block();
+        repository.save(hotelTwo).block();
 
         repository.delete();
 

@@ -6,7 +6,7 @@ public interface HotelRepository {
 
     Mono<Hotel> find(HotelId id);
 
-    void save(Hotel hotel);
+    Mono<Void> save(Hotel hotel);
 
     void delete();
 

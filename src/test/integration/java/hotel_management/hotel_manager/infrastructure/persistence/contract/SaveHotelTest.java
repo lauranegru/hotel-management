@@ -29,7 +29,7 @@ public abstract class SaveHotelTest {
     void creates_the_hotel_when_the_hotel_does_not_exist() {
         var hotel = anyHotel();
 
-        repository.save(hotel);
+        repository.save(hotel).block();
 
         var result = repository.find(hotel.id());
 
@@ -46,8 +46,8 @@ public abstract class SaveHotelTest {
             .id(existing.id())
             .build();
 
-        repository.save(existing);
-        repository.save(updated);
+        repository.save(existing).block();
+        repository.save(updated).block();
 
         var result = repository.find(existing.id());
 
@@ -65,9 +65,9 @@ public abstract class SaveHotelTest {
             .id(target.id())
             .build();
 
-        repository.save(existing);
-        repository.save(target);
-        repository.save(updated);
+        repository.save(existing).block();
+        repository.save(target).block();
+        repository.save(updated).block();
 
         var result = repository.find(existing.id());
 

@@ -27,11 +27,11 @@ public class MongoHotelRepository implements HotelRepository {
     }
 
     @Override
-    public void save(Hotel hotel) {
-        Mono.just(hotel)
+    public Mono<Void> save(Hotel hotel) {
+        return Mono.just(hotel)
             .map(mapper::toMongo)
             .flatMap(repository::save)
-            .block();
+            .then();
     }
 
     @Override

@@ -27,8 +27,8 @@ public class MemoryHotelRepository implements HotelRepository {
     }
 
     @Override
-    public void save(Hotel hotel) {
-        hotels.put(hotel.id(), hotel);
+    public Mono<Void> save(Hotel hotel) {
+        return Mono.fromRunnable(() -> hotels.put(hotel.id(), hotel));
     }
 
     @Override

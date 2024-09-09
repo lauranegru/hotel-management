@@ -42,12 +42,16 @@ class CreateHotelHandlerTest {
             .find(HotelId.of(command.id())))
             .willReturn(Mono.empty());
 
-        handler.execute(command);
-
         var hotel = hotel()
             .id("685cd9b3-4788-49d1-a754-cd1130b795a4")
             .name("The Mallorca Hotel")
             .build();
+
+        given(repository
+            .save(hotel))
+            .willReturn(Mono.empty());
+
+        handler.execute(command);
 
         verify(repository).save(hotel);
     }
