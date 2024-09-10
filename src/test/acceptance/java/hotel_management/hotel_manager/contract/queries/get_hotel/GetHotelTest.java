@@ -3,7 +3,6 @@ package hotel_management.hotel_manager.contract.queries.get_hotel;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import hotel_management.hotel_manager.service.HotelService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +26,7 @@ public class GetHotelTest {
 
     @AfterEach
     void tearDown() {
-        repository.delete();
+        repository.delete().block();
     }
 
     @Test

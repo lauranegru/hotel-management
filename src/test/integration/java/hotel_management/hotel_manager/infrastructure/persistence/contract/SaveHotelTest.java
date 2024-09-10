@@ -23,7 +23,7 @@ public abstract class SaveHotelTest {
 
     @AfterEach
     void tearDown() {
-        repository.delete();
+        repository.delete().block();
     }
 
     @Test

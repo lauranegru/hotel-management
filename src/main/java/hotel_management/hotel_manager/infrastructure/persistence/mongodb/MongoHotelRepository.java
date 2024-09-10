@@ -35,8 +35,8 @@ public class MongoHotelRepository implements HotelRepository {
     }
 
     @Override
-    public void delete() {
-        repository.deleteAll().block();
+    public Mono<Void> delete() {
+        return repository.deleteAll();
     }
 
 }

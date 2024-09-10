@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Primary
 @Component
@@ -32,8 +31,8 @@ public class MemoryHotelRepository implements HotelRepository {
     }
 
     @Override
-    public void delete() {
-        hotels.clear();
+    public Mono<Void> delete() {
+        return Mono.fromRunnable(hotels::clear);
     }
 
 }

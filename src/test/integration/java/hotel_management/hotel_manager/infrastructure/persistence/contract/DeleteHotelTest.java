@@ -22,13 +22,13 @@ public abstract class DeleteHotelTest {
 
     @AfterEach
     void tearDown() {
-        repository.delete();
+        repository.delete().block();
     }
 
     @Test
     void deletes_no_hotels_when_no_hotels_exist() {
         assertThatNoException()
-            .isThrownBy(repository::delete);
+            .isThrownBy(() -> repository.delete().block());
     }
 
     @Test
@@ -36,7 +36,7 @@ public abstract class DeleteHotelTest {
         var hotel = anyHotel();
 
         repository.save(hotel).block();
-        repository.delete();
+        repository.delete().block();
 
         var result = repository.find(hotel.id());
 
@@ -52,7 +52,7 @@ public abstract class DeleteHotelTest {
         repository.save(hotelOne).block();
         repository.save(hotelTwo).block();
 
-        repository.delete();
+        repository.delete().block();
 
         var resultOne = repository.find(hotelOne.id());
         var resultTwo = repository.find(hotelTwo.id());

@@ -8,6 +8,6 @@ public interface HotelRepository {
 
     Mono<Void> save(Hotel hotel);
 
-    void delete();
+    Mono<Void> delete();
 
 }

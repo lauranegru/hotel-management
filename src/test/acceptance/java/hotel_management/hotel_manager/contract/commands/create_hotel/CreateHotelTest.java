@@ -26,7 +26,7 @@ public class CreateHotelTest {
 
     @AfterEach
     void tearDown() {
-        repository.delete();
+        repository.delete().block();
     }
 
     @Test
