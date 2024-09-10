@@ -4,6 +4,7 @@ import hotel_management.hotel_manager.domain.HotelRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
@@ -29,9 +30,9 @@ public abstract class SaveHotelTest {
     void creates_the_hotel_when_the_hotel_does_not_exist() {
         var hotel = anyHotel();
 
-        repository.save(hotel).block();
-
-        var result = repository.find(hotel.id());
+        var result = Mono.empty()
+            .then(repository.save(hotel))
+            .then(repository.find(hotel.id()));
 
         StepVerifier.create(result)
             .expectNext(hotel)
@@ -46,10 +47,10 @@ public abstract class SaveHotelTest {
             .id(existing.id())
             .build();
 
-        repository.save(existing).block();
-        repository.save(updated).block();
-
-        var result = repository.find(existing.id());
+        var result = Mono.empty()
+            .then(repository.save(existing))
+            .then(repository.save(updated))
+            .then(repository.find(existing.id()));
 
         StepVerifier.create(result)
             .expectNext(updated)
@@ -65,11 +66,11 @@ public abstract class SaveHotelTest {
             .id(target.id())
             .build();
 
-        repository.save(existing).block();
-        repository.save(target).block();
-        repository.save(updated).block();
-
-        var result = repository.find(existing.id());
+        var result = Mono.empty()
+            .then(repository.save(existing))
+            .then(repository.save(target))
+            .then(repository.save(updated))
+            .then(repository.find(existing.id()));
 
         StepVerifier.create(result)
             .expectNext(existing)
