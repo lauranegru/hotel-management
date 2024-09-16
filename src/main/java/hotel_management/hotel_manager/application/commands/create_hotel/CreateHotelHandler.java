@@ -6,6 +6,7 @@ import hotel_management.hotel_manager.domain.HotelId;
 import hotel_management.hotel_manager.domain.HotelName;
 import hotel_management.hotel_manager.domain.HotelRepository;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 public class CreateHotelHandler {
@@ -16,20 +17,24 @@ public class CreateHotelHandler {
         this.repository = repository;
     }
 
-    public void execute(CreateHotelCommand command) {
-        var hotel = new Hotel(
-            HotelId.of(command.id()),
-            HotelName.of(command.name())
+    public Mono<Void> execute(CreateHotelCommand command) {
+        return Mono.just(command)
+            .map(this::createHotel)
+            .flatMap(this::assertUnique)
+            .flatMap(repository::save);
+    }
+
+    private Hotel createHotel(CreateHotelCommand cmd) {
+        return new Hotel(
+            HotelId.of(cmd.id()),
+            HotelName.of(cmd.name())
         );
+    }
 
-        var existing = repository
-            .find(hotel.id())
-            .blockOptional();
-
-        if (existing.isPresent())
-            throw new HotelAlreadyExists("The hotel with the given id already exists");
-
-        repository.save(hotel).block();
+    private Mono<Hotel> assertUnique(Hotel hotel) {
+        return repository.find(hotel.id())
+            .doOnNext(h -> {throw new HotelAlreadyExists("The hotel with the given id already exists");})
+            .thenReturn(hotel);
     }
 
 }

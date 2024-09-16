@@ -11,10 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.application.commands.create_hotel.CreateHotelCommandGenerator.createHotelCommand;
 import static hotel_management.hotel_manager.domain.HotelGenerator.hotel;
-import static org.assertj.core.api.Assertions.assertThatException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -51,7 +52,10 @@ class CreateHotelHandlerTest {
             .save(hotel))
             .willReturn(Mono.empty());
 
-        handler.execute(command);
+        var result = handler.execute(command);
+
+        StepVerifier.create(result)
+            .verifyComplete();
 
         verify(repository).save(hotel);
     }
@@ -70,10 +74,12 @@ class CreateHotelHandlerTest {
             .find(hotel.id()))
             .willReturn(Mono.just(hotel));
 
-        assertThatException()
-            .isThrownBy(() -> handler.execute(command))
-            .isInstanceOf(HotelAlreadyExists.class)
-            .withMessage("The hotel with the given id already exists");
+        var result = handler.execute(command);
+
+        StepVerifier.create(result)
+            .verifyErrorSatisfies(error -> assertThat(error)
+                .isInstanceOf(HotelAlreadyExists.class)
+                .hasMessage("The hotel with the given id already exists"));
     }
 
     @Test
@@ -82,9 +88,10 @@ class CreateHotelHandlerTest {
             .invalidName()
             .build();
 
-        assertThatException()
-            .isThrownBy(() -> handler.execute(command))
-            .isInstanceOf(InvalidHotelName.class);
+        var result = handler.execute(command);
+
+        StepVerifier.create(result)
+            .verifyError(InvalidHotelName.class);
     }
 
     @Test
@@ -93,9 +100,10 @@ class CreateHotelHandlerTest {
             .invalidId()
             .build();
 
-        assertThatException()
-            .isThrownBy(() -> handler.execute(command))
-            .isInstanceOf(InvalidHotelId.class);
+        var result = handler.execute(command);
+
+        StepVerifier.create(result)
+            .verifyError(InvalidHotelId.class);
     }
 
 }

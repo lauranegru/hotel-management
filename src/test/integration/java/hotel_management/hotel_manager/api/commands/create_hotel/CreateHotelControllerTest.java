@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.anyCreateHotelRequest;
 import static hotel_management.hotel_manager.api.commands.create_hotel.CreateHotelRequestGenerator.createHotelRequest;
@@ -21,7 +22,7 @@ import static hotel_management.shared.api.rest.RestErrorGenerator.errorResponse;
 import static hotel_management.shared.api.rest.RestResponseGenerator.response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
@@ -47,6 +48,10 @@ class CreateHotelControllerTest {
             .id("685cd9b3-4788-49d1-a754-cd1130b795a4")
             .name("The Mallorca Hotel")
             .build();
+
+        given(handler
+            .execute(any(CreateHotelCommand.class)))
+            .willReturn(Mono.empty());
 
         var response = client.send(request);
 
@@ -200,7 +205,9 @@ class CreateHotelControllerTest {
     }
 
     private void givenException(Throwable exception) {
-        willThrow(exception).given(handler).execute(any(CreateHotelCommand.class));
+        given(handler
+            .execute(any(CreateHotelCommand.class)))
+            .willReturn(Mono.error(exception));
     }
 
 }

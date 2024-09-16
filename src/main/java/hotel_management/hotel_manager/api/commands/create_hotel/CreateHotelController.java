@@ -24,7 +24,7 @@ public class CreateHotelController {
     @ResponseStatus(CREATED)
     @PostMapping("/hotels/commands/create-hotel")
     public Mono<Void> create(@RequestBody CreateHotelCommand command) {
-        return Mono.<Void>fromRunnable(() -> handler.execute(command))
+        return Mono.<Void>fromRunnable(() -> handler.execute(command).block())
             .subscribeOn(Schedulers.boundedElastic());
     }
 
