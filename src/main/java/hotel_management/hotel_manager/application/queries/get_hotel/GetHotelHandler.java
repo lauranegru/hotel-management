@@ -19,7 +19,8 @@ public class GetHotelHandler {
     }
 
     public Mono<HotelView> execute(GetHotelQuery query) {
-        return repository.find(HotelId.of(query.id()))
+        return Mono.fromSupplier(() -> HotelId.of(query.id()))
+            .flatMap(repository::find)
             .map(mapper::toView);
     }
 

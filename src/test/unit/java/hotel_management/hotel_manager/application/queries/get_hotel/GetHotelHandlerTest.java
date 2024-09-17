@@ -2,6 +2,7 @@ package hotel_management.hotel_manager.application.queries.get_hotel;
 
 import hotel_management.hotel_manager.application.views.HotelMapper;
 import hotel_management.hotel_manager.domain.HotelRepository;
+import hotel_management.hotel_manager.domain.InvalidHotelId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,6 +70,18 @@ class GetHotelHandlerTest {
 
         StepVerifier.create(result)
             .verifyComplete();
+    }
+
+    @Test
+    void throws_an_exception_when_the_hotel_id_is_invalid() {
+        var query = getHotelQuery()
+            .invalidId()
+            .build();
+
+        var result = handler.execute(query);
+
+        StepVerifier.create(result)
+            .verifyError(InvalidHotelId.class);
     }
 
 }

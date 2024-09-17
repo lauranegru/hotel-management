@@ -32,8 +32,12 @@ public class GetHotelQueryGenerator {
         return this;
     }
 
+    public GetHotelQueryGenerator invalidId() {
+        this.id = null;
+        return this;
+    }
+
     public GetHotelQuery build() {
         return new GetHotelQuery(id);
     }
-
 }
