@@ -24,7 +24,7 @@ public class CreateHotelSteps {
 
     public Mono<Hotel> assertUnique(Hotel hotel) {
         return repository.find(hotel.id())
-            .doOnNext(h -> {throw new HotelAlreadyExists("The hotel with the given id already exists");})
+            .doOnNext(existing -> {throw new HotelAlreadyExists();})
             .thenReturn(hotel);
     }
 
