@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 
-@Primary
 @Component
 public class MemoryHotelRepository implements HotelRepository {
 

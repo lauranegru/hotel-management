@@ -3,9 +3,11 @@ package hotel_management.hotel_manager.infrastructure.persistence.mongodb;
 import hotel_management.hotel_manager.domain.Hotel;
 import hotel_management.hotel_manager.domain.HotelId;
 import hotel_management.hotel_manager.domain.HotelRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+@Primary
 @Component
 public class MongoHotelRepository implements HotelRepository {
 
