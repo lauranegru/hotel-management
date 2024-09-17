@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static hotel_management.hotel_manager.domain.HotelGenerator.anyHotel;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public abstract class DeleteHotelTest {
 
@@ -28,9 +27,11 @@ public abstract class DeleteHotelTest {
     }
 
     @Test
-    void deletes_no_hotels_when_no_hotels_exist() {
-        assertThatNoException()
-            .isThrownBy(() -> repository.delete().block());
+    void does_not_throw_any_exception_when_no_hotels_exist() {
+        var result = repository.delete();
+
+        StepVerifier.create(result)
+            .verifyComplete();
     }
 
     @Test
