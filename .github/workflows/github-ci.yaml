@@ -65,8 +65,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Docker Compose Up
+        run: docker compose up -d --wait
+
       - name: Execute Acceptance Tests
         run: ./gradlew acceptance
+
+      - name: Docker Compose Down
+        if: always()
+        run: docker compose down --volumes
 
   build:
     needs: [ unit, integration, acceptance ]
