@@ -33,10 +33,17 @@ public class GetHotelRequestGenerator {
         return this;
     }
 
+    public GetHotelRequestGenerator missingId() {
+        this.id = null;
+        return this;
+    }
+
     public RestRequest build() {
+        var query = (id == null) ? "" : ("?id=" + id);
+
         return request()
             .method("GET")
-            .path("/hotels/queries/get-hotel?id=" + id)
+            .path("/hotels/queries/get-hotel" + query)
             .build();
     }
 

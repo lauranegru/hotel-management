@@ -2,6 +2,7 @@ package hotel_management.hotel_manager.api.queries.get_hotel;
 
 import hotel_management.hotel_manager.application.queries.get_hotel.GetHotelHandler;
 import hotel_management.hotel_manager.application.queries.get_hotel.GetHotelQuery;
+import hotel_management.hotel_manager.domain.InvalidHotelId;
 import hotel_management.shared.api.rest.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,31 @@ class GetHotelControllerTest {
             .build();
 
         assertThat(response).isEqualTo(expected);
+    }
+
+    @Test
+    void returns_an_error_response_when_the_id_is_missing() {
+        givenException(new InvalidHotelId("The hotel id should not be missing"));
+
+        var request = getHotelRequest()
+            .missingId()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The hotel id should not be missing")
+            .type("invalid-hotel-id")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+    }
+
+    private void givenException(Throwable exception) {
+        given(handler
+            .execute(any(GetHotelQuery.class)))
+            .willThrow(exception);
     }
 
 }
