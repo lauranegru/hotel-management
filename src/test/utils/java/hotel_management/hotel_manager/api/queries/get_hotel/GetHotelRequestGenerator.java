@@ -38,6 +38,11 @@ public class GetHotelRequestGenerator {
         return this;
     }
 
+    public GetHotelRequestGenerator invalidIdType() {
+        this.id = "invalid-type";
+        return this;
+    }
+
     public RestRequest build() {
         var query = (id == null) ? "" : ("?id=" + id);
 

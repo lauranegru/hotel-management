@@ -114,6 +114,24 @@ class GetHotelControllerTest {
         assertThat(response).isEqualTo(expected);
     }
 
+    @Test
+    void returns_an_error_response_when_the_id_has_invalid_type() {
+        var request = getHotelRequest()
+            .invalidIdType()
+            .build();
+
+        var response = client.send(request);
+
+        var expected = errorResponse()
+            .message("The field id should have UUID type")
+            .type("validation-error")
+            .status(400)
+            .build();
+
+        assertThat(response).isEqualTo(expected);
+
+    }
+
     private void givenException(Throwable exception) {
         given(handler
             .execute(any(GetHotelQuery.class)))
