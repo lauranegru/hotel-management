@@ -1,6 +1,7 @@
 package hotel_management.hotel_manager.api.queries.get_hotel;
 
 import hotel_management.shared.api.rest.RestRequest;
+import hotel_management.shared.api.rest.UriGenerator.QueryGenerator;
 
 import java.util.UUID;
 
@@ -9,9 +10,10 @@ import static hotel_management.shared.api.rest.RestRequestGenerator.request;
 
 public class GetHotelRequestGenerator {
 
-    private String id;
+    private final QueryGenerator query;
 
     private GetHotelRequestGenerator() {
+        query = QueryGenerator.query();
         id(anyHotelIdValue());
     }
 
@@ -24,31 +26,31 @@ public class GetHotelRequestGenerator {
     }
 
     public GetHotelRequestGenerator id(String id) {
-        this.id = id;
+        query.param("id", id);
         return this;
     }
 
     public GetHotelRequestGenerator id(UUID id) {
-        this.id = id.toString();
+        query.param("id", id.toString());
         return this;
     }
 
     public GetHotelRequestGenerator missingId() {
-        this.id = null;
+        query.missing("id");
         return this;
     }
 
     public GetHotelRequestGenerator invalidIdType() {
-        this.id = "invalid-type";
+        query.param("id", "invalid-type");
         return this;
     }
 
     public RestRequest build() {
-        var query = (id == null) ? "" : ("?id=" + id);
-
         return request()
             .method("GET")
-            .path("/hotels/queries/get-hotel" + query)
+            .uri(u -> u
+                .path("/hotels/queries/get-hotel")
+                .query(query))
             .build();
     }
 
